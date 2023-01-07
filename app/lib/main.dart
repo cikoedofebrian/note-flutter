@@ -1,7 +1,8 @@
+import 'package:app/providers/note_prov.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'screens/home.dart';
-import 'screens/splash_screen.dart';
 import 'screens/edit.dart';
 
 void main() {
@@ -14,17 +15,20 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.deepOrange,
-        textTheme: GoogleFonts.poppinsTextTheme(),
+    return ChangeNotifierProvider(
+      create: (context) => NoteProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.deepOrange,
+          textTheme: GoogleFonts.poppinsTextTheme(),
+        ),
+        routes: {
+          '/edit': (context) => const Edit(),
+        },
+        home: const Home(),
       ),
-      routes: {
-        '/edit': (context) => Edit(),
-      },
-      home: const Home(),
     );
   }
 }
