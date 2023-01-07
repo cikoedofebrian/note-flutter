@@ -12,7 +12,7 @@ class _NewFormState extends State<NewForm> {
   Widget build(BuildContext context) {
     final textController = TextEditingController();
 
-    return Container(
+    return SizedBox(
       width: 70,
       height: 70,
       child: FittedBox(
@@ -21,12 +21,12 @@ class _NewFormState extends State<NewForm> {
             showDialog(
               context: context,
               builder: (ctx) => AlertDialog(
-                content: Container(
+                content: SizedBox(
                   height: 200,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('New Notes', textAlign: TextAlign.start),
+                      const Text('New Notes', textAlign: TextAlign.start),
                       TextField(
                         controller: textController,
                       ),
@@ -37,7 +37,7 @@ class _NewFormState extends State<NewForm> {
                             onPressed: () {
                               Navigator.pop(context);
                             },
-                            child: Text('Cancel'),
+                            child: const Text('Cancel'),
                           ),
                           ElevatedButton(
                               onPressed: () {
@@ -48,7 +48,7 @@ class _NewFormState extends State<NewForm> {
                                 Navigator.pushNamed(context, '/edit',
                                     arguments: textController.text);
                               },
-                              child: Text('Continue'))
+                              child: const Text('Continue'))
                         ],
                       ),
                     ],
@@ -57,7 +57,7 @@ class _NewFormState extends State<NewForm> {
               ),
             );
           },
-          child: Icon(Icons.add),
+          child: const Icon(Icons.add),
         ),
       ),
     );

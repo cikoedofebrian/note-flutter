@@ -26,9 +26,10 @@ class _EditState extends State<Edit> {
     return Scaffold(
       appBar: AppBar(
         title: title == null ? Text('Edit') : Text(title as String),
-        backgroundColor: appbarcolor != null ? appbarcolor : null,
+        backgroundColor: appbarcolor,
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.info_outline_rounded)),
+          IconButton(
+              onPressed: () {}, icon: const Icon(Icons.info_outline_rounded)),
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: IconButton(

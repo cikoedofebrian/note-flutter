@@ -1,9 +1,8 @@
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import '../models/note.dart';
 
 class NoteProvider with ChangeNotifier {
-  List<Note> _notes = [];
+  final List<Note> _notes = [];
 
   List<Note> get notes {
     return _notes;
@@ -17,6 +16,11 @@ class NoteProvider with ChangeNotifier {
         date: DateTime.now(),
         content: nsubtitle);
     _notes.add(newNote);
+    notifyListeners();
+  }
+
+  void deleteNote(String id) {
+    _notes.removeWhere((element) => element.id == id);
     notifyListeners();
   }
 }
