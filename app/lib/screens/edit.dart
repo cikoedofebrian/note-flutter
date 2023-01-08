@@ -15,6 +15,11 @@ class _EditState extends State<Edit> {
   final _textController = TextEditingController();
   Color appbarcolor = Colors.deepOrange;
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void appbarColor(Color color) {
     setState(() {
       appbarcolor = color;
@@ -66,11 +71,13 @@ class _EditState extends State<Edit> {
   Widget build(BuildContext context) {
     var data = ModalRoute.of(context)?.settings.arguments as List<Object>;
     var title = '';
-    var note = Provider.of<NoteProvider>(context).findById(data[0] as String);
     bool edit = false;
     if (data.length > 1) {
+      var note = Provider.of<NoteProvider>(context, listen: false)
+          .findById(data[0] as String);
       edit = data[1] as bool;
       title = note.title;
+      _textController.text = note.content;
     } else {
       title = data[0] as String;
     }
@@ -82,10 +89,8 @@ class _EditState extends State<Edit> {
           edit
               ? IconButton(
                   onPressed: () {
-                    // Information(
-                    //   date: note.date.toString(),
-                    //   title: note.title,
-                    // );
+                    var note = Provider.of<NoteProvider>(context, listen: false)
+                        .findById(data[0] as String);
                     showInformation(note.title, note.date);
                   },
                   icon: const Icon(Icons.info_outline_rounded))

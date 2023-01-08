@@ -1,22 +1,34 @@
-// import 'package:flutter/material.dart';
-// import 'package:splashscreen/splashscreen.dart';
-// import 'home.dart';
+import 'dart:async';
+import 'package:flutter/material.dart';
 
-// class Splash extends StatelessWidget {
-//   const Splash({super.key});
+class Splash extends StatefulWidget {
+  const Splash({super.key});
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return SplashScreen(
-//       seconds: 1,
-//       navigateAfterSeconds: Home(),
-//       title: Text(
-//         'GeeksForGeeks',
-//         textScaleFactor: 2,
-//       ),
-//       loadingText: Text("Loading"),
-//       photoSize: 100.0,
-//       loaderColor: Colors.blue,
-//     );
-//   }
-// }
+  @override
+  State<Splash> createState() => _SplashState();
+}
+
+class _SplashState extends State<Splash> {
+  @override
+  void initState() {
+    super.initState();
+    Timer(const Duration(seconds: 3),
+        (() => Navigator.pushReplacementNamed(context, '/home')));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: const Center(
+        child: Text(
+          'Notec',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 30,
+          ),
+        ),
+      ),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+    );
+  }
+}

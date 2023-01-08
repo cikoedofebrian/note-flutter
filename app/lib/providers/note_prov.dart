@@ -1,26 +1,27 @@
+import 'package:app/helpers/db_helper.dart';
 import 'package:flutter/material.dart';
 import '../models/note.dart';
 
 class NoteProvider with ChangeNotifier {
-  final List<Note> _notes = [];
+  List<Note> _notes = [];
 
   List<Note> get notes {
     return _notes;
   }
 
   void addNote(String ntitle, String nsubtitle, Color ncolors) {
-    final newNote = Note(
-        id: DateTime.now().toString(),
-        title: ntitle,
-        colors: ncolors,
-        date: DateTime.now(),
-        content: nsubtitle);
-    _notes.add(newNote);
+    DBHelper.insert({
+      'id': DateTime.now().toString(),
+      'date': DateTime.now().toIso8601String(),
+      'title': ntitle,
+      'content': nsubtitle,
+      'color': ncolors.value
+    });
     notifyListeners();
   }
 
   void deleteNote(String id) {
-    _notes.removeWhere((element) => element.id == id);
+    DBHelper.delete(id);
     notifyListeners();
   }
 
@@ -30,7 +31,20 @@ class NoteProvider with ChangeNotifier {
   }
 
   void updateNote(String id, String content) {
-    var index = _notes.indexWhere((element) => element.id == id);
-    _notes[index].content = content;
+    DBHelper.update(id, content);
+    notifyListeners();
+  }
+
+  Future<void> fetchNotesData() async {
+    final data = await DBHelper.getData();
+    _notes = data
+        .map((e) => Note(
+            id: e['id'],
+            title: e['title'],
+            colors: Color(e['color']),
+            date: DateTime.parse(e['date']),
+            content: e['content']))
+        .toList();
+    notifyListeners();
   }
 }
