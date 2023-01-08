@@ -46,7 +46,7 @@ class _NewFormState extends State<NewForm> {
                                 }
                                 Navigator.pop(context);
                                 Navigator.pushNamed(context, '/edit',
-                                    arguments: textController.text);
+                                    arguments: [textController.text]);
                               },
                               child: const Text('Continue'))
                         ],

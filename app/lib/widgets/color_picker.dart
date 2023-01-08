@@ -27,9 +27,9 @@ class _ColorPickerState extends State<ColorPicker> {
   Widget build(BuildContext context) {
     return Container(
       height: 50,
-      margin: EdgeInsets.only(top: 10),
+      margin: const EdgeInsets.only(top: 10),
       child: ListView.builder(
-        padding: EdgeInsets.all(10),
+        padding: const EdgeInsets.all(10),
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) => Padding(
             padding: const EdgeInsets.symmetric(
@@ -40,7 +40,7 @@ class _ColorPickerState extends State<ColorPicker> {
                   backgroundColor: colors[index],
                   foregroundColor: Colors.white,
                   child: choosenColor == colors[index]
-                      ? Icon(Icons.circle)
+                      ? const Icon(Icons.circle)
                       : null),
               onTap: () {
                 choosenColor = colors[index];

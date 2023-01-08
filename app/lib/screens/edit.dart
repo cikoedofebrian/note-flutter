@@ -1,4 +1,5 @@
 import 'package:app/widgets/color_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/note_prov.dart';
@@ -20,23 +21,88 @@ class _EditState extends State<Edit> {
     });
   }
 
+  Future<void> showInformation(String title, DateTime date) {
+    return showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        content: SizedBox(
+          height: 200,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text('Information', textAlign: TextAlign.start),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [const Text("Title"), Text(title)],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Date created"),
+                      Text(DateFormat('dd-MM-yyyy').format(date))
+                    ],
+                  ),
+                ],
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Exit'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    var title = ModalRoute.of(context)?.settings.arguments;
+    var data = ModalRoute.of(context)?.settings.arguments as List<Object>;
+    var title = '';
+    var note = Provider.of<NoteProvider>(context).findById(data[0] as String);
+    bool edit = false;
+    if (data.length > 1) {
+      edit = data[1] as bool;
+      title = note.title;
+    } else {
+      title = data[0] as String;
+    }
     return Scaffold(
       appBar: AppBar(
-        title: title == null ? Text('Edit') : Text(title as String),
+        title: Text(title),
         backgroundColor: appbarcolor,
         actions: [
-          IconButton(
-              onPressed: () {}, icon: const Icon(Icons.info_outline_rounded)),
+          edit
+              ? IconButton(
+                  onPressed: () {
+                    // Information(
+                    //   date: note.date.toString(),
+                    //   title: note.title,
+                    // );
+                    showInformation(note.title, note.date);
+                  },
+                  icon: const Icon(Icons.info_outline_rounded))
+              : const SizedBox(),
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: IconButton(
               onPressed: () {
-                Provider.of<NoteProvider>(context, listen: false).addNote(
-                    title as String, _textController.text, appbarcolor);
-                Navigator.pop(context, _textController.text);
+                if (edit) {
+                  Provider.of<NoteProvider>(context, listen: false)
+                      .updateNote(data[0] as String, _textController.text);
+                  Navigator.pop(context);
+                } else {
+                  Provider.of<NoteProvider>(context, listen: false)
+                      .addNote(title, _textController.text, appbarcolor);
+                  Navigator.pop(context);
+                }
               },
               icon: const Icon(Icons.check),
             ),
@@ -51,13 +117,13 @@ class _EditState extends State<Edit> {
           Expanded(
             child: Container(
               // height: MediaQuery.of(context).size.height,
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               child: TextField(
                 controller: _textController,
                 maxLines: null,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: null,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 19,
                   height: 1.5,
                 ),

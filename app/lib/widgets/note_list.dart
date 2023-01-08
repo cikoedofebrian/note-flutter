@@ -59,8 +59,8 @@ class _NoteListState extends State<NoteList> {
                     IconButton(
                       icon: const Icon(Icons.edit),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/edit')
-                            .then((value) => null);
+                        Navigator.pushNamed(context, '/edit',
+                            arguments: [data[index].id, true]);
                       },
                     ),
                   ],

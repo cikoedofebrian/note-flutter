@@ -23,4 +23,14 @@ class NoteProvider with ChangeNotifier {
     _notes.removeWhere((element) => element.id == id);
     notifyListeners();
   }
+
+  Note findById(String id) {
+    var notes = _notes.firstWhere((element) => element.id == id);
+    return notes;
+  }
+
+  void updateNote(String id, String content) {
+    var index = _notes.indexWhere((element) => element.id == id);
+    _notes[index].content = content;
+  }
 }
